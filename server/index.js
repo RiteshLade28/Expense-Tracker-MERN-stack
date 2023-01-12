@@ -1,29 +1,37 @@
 import Express from "express";
-import connect from "./database/mongodb.js"
-import cors from 'cors';
+import connect from "./database/mongodb.js";
+import cors from "cors";
 import bodyParser from "body-parser";
 import Transaction from "./models/transaction.js";
-import TransactionRoutes from './routes/transaction.js'; 
-import AuthApiRoutes from './routes/AuthApi.js';
-import UserApiRoutes from './routes/UserApi.js';
-import CategoryApiRoutes from './routes/CategoryApi.js';
+import TransactionRoutes from "./routes/transaction.js";
+import AuthApiRoutes from "./routes/AuthApi.js";
+import UserApiRoutes from "./routes/UserApi.js";
+import CategoryApiRoutes from "./routes/CategoryApi.js";
 import passport from "passport";
 import passportConfig from "./config/passport.js";
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 
 const app = Express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
-app.use(bodyParser.json({limit: "20mb", extended: true}));
-app.use(bodyParser.urlencoded({limit: "20mb", extended: true}));
+app.use(bodyParser.json({ limit: "20mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "20mb", extended: true }));
 app.use(cors());
 app.use(passport.initialize());
 passportConfig(passport);
 
-app.use('/transaction', passport.authenticate('jwt', {session: false}), TransactionRoutes);
-app.use('/auth', AuthApiRoutes);
-app.use('/user', UserApiRoutes);
-app.use('/category', passport.authenticate('jwt', {session: false}), CategoryApiRoutes);
+app.use(
+  "/transaction",
+  passport.authenticate("jwt", { session: false }),
+  TransactionRoutes
+);
+app.use("/auth", AuthApiRoutes);
+app.use("/user", UserApiRoutes);
+app.use(
+  "/category",
+  passport.authenticate("jwt", { session: false }),
+  CategoryApiRoutes
+);
 connect();
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
