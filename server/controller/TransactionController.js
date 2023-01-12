@@ -32,8 +32,6 @@ export const index = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  console.log("create");
-  // console.log(req);
   const { amount, details, date, category_id } = req.body;
   const transaction = new Transaction({
     amount,
@@ -47,7 +45,6 @@ export const create = async (req, res) => {
 };
 
 export const destroy = async (req, res) => {
-  console.log(req.params.id);
   await Transaction.deleteOne({ _id: req.params.id });
   res.json({ message: "Success" });
 };

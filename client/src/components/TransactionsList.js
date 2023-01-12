@@ -20,7 +20,6 @@ export default function TransactionsList({
   fetchTransactions,
   setEditTransaction,
 }) {
-  console.log(data);
   const user = useSelector((state) => state.auth.user);
 
   function categoryName(id) {
