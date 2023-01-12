@@ -1,16 +1,29 @@
-import { Express } from "express";
-import mongoose from "mongoose";
+import Express from "express";
+import connect from "./database/mongodb.js"
 import cors from 'cors';
+import bodyParser from "body-parser";
+import Transaction from "./models/transaction.js";
+import TransactionRoutes from './routes/transaction.js'; 
+import AuthApiRoutes from './routes/AuthApi.js';
+import UserApiRoutes from './routes/UserApi.js';
+import CategoryApiRoutes from './routes/CategoryApi.js';
+import passport from "passport";
+import passportConfig from "./config/passport.js";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const app = Express();
 const PORT = 4000;
-const CONNECTION_URL = "mongodb://RiteshLade:1XBDHjFP2qfTJizB@ac-3ffyfir-shard-00-00.cqsmpth.mongodb.net:27017,ac-3ffyfir-shard-00-01.cqsmpth.mongodb.net:27017,ac-3ffyfir-shard-00-02.cqsmpth.mongodb.net:27017/?ssl=true&replicaSet=atlas-nculeh-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 app.use(bodyParser.json({limit: "20mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "20mb", extended: true}));
 app.use(cors());
-mongoose.connect(CONNECTION_URL, {
-    useNewUrlParser: true, useUnifiedTopology: true
-}).then(() => {
-    app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
-}).catch((err) => console.log(err));
+app.use(passport.initialize());
+passportConfig(passport);
+
+app.use('/transaction', passport.authenticate('jwt', {session: false}), TransactionRoutes);
+app.use('/auth', AuthApiRoutes);
+app.use('/user', UserApiRoutes);
+app.use('/category', passport.authenticate('jwt', {session: false}), CategoryApiRoutes);
+connect();
+app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
