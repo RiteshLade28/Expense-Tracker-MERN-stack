@@ -15,34 +15,38 @@ import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 
-function formatDate(date) {
-  return dayjs(date).format("DD MMM YYYY");
-}
-
 export default function TransactionsList({
   data,
   fetchTransactions,
   setEditTransaction,
 }) {
-  const token = Cookies.get("token");
-  function remove(id) {
-    if (!window.confirm("Are You Sure!")) return;
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/transaction/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        window.alert("Deleted Successfully");
-        fetchTransactions();
-      })
-      .catch((err) => console.log(err));
-  }
+  console.log(data);
   const user = useSelector((state) => state.auth.user);
+
   function categoryName(id) {
     const category = user.categories.find((category) => category._id === id);
     return category ? category.label : "NA";
+  }
+
+  async function remove(_id) {
+    const token = Cookies.get("token");
+    if (!window.confirm("Are you sure")) return;
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/transaction/${_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (res.ok) {
+      fetchTransactions();
+      window.alert("Deleted Successfully");
+    }
+  }
+  function formatDate(date) {
+    return dayjs(date).format("DD MMM, YYYY");
   }
 
   return (

@@ -25,7 +25,7 @@ export default function TransactionForm({
   fetchTransactions,
   editTransaction,
 }) {
-  const { categories } = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const token = Cookies.get("token");
   const [form, setForm] = useState(initialForm);
 
@@ -83,7 +83,8 @@ export default function TransactionForm({
 
   function getCategoryNameById() {
     return (
-      categories.find((category) => category._id === form.category_id) ?? " "
+      user.categories.find((category) => category._id === form.category_id) ??
+      " "
     );
   }
 
@@ -131,7 +132,7 @@ export default function TransactionForm({
               setForm({ ...form, category_id: newValue._id });
             }}
             id="controllable-states-demo"
-            options={categories}
+            options={user.categories}
             sx={{ width: 200, marginRight: 5 }}
             renderInput={(params) => (
               <TextField {...params} size="small" label="Category" />

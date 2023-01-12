@@ -13,7 +13,13 @@ export const index = async (req, res) => {
       $group: {
         _id: { $month: "$date" },
         transactions: {
-          $push: { amount: "$amount", details: "$details", date: "$date" },
+          $push: {
+            amount: "$amount",
+            details: "$details",
+            date: "$date",
+            type: "$type",
+            _id: "$_id",
+          },
         },
         totalExpenses: {
           $sum: "$amount",
@@ -34,13 +40,14 @@ export const create = async (req, res) => {
     details,
     date,
     user_id: req.user._id,
-    category_id: category_id,
+    category_id,
   });
   await transaction.save();
   res.json({ message: "Success" });
 };
 
 export const destroy = async (req, res) => {
+  console.log(req.params.id);
   await Transaction.deleteOne({ _id: req.params.id });
   res.json({ message: "Success" });
 };
