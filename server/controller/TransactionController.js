@@ -17,7 +17,7 @@ export const index = async (req, res) => {
             amount: "$amount",
             details: "$details",
             date: "$date",
-            type: "$type",
+            category_id: "$category_id",
             _id: "$_id",
           },
         },

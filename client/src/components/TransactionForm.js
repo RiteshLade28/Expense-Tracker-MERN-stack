@@ -25,6 +25,7 @@ export default function TransactionForm({
   fetchTransactions,
   editTransaction,
 }) {
+  const [isLoading, setLoading] = useState(true);
   const user = useSelector((state) => state.auth.user);
   const token = Cookies.get("token");
   const [form, setForm] = useState(initialForm);
@@ -35,6 +36,8 @@ export default function TransactionForm({
     }
   }, [editTransaction]);
 
+  // const user = useSelector((state) => state.auth.user);
+
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -43,12 +46,7 @@ export default function TransactionForm({
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (editTransaction.amount === undefined) {
-      create();
-    } else {
-      update();
-    }
+    editTransaction.amount === undefined ? create() : update();
   };
 
   const create = async () => {
@@ -82,9 +80,12 @@ export default function TransactionForm({
   };
 
   function getCategoryNameById() {
+    console.log("getCategoryNameById");
+    console.log(user.categories);
+
     return (
       user.categories.find((category) => category._id === form.category_id) ??
-      " "
+      ""
     );
   }
 
@@ -131,7 +132,7 @@ export default function TransactionForm({
             onChange={(event, newValue) => {
               setForm({ ...form, category_id: newValue._id });
             }}
-            id="controllable-states-demo"
+            id="Category"
             options={user.categories}
             sx={{ width: 200, marginRight: 5 }}
             renderInput={(params) => (

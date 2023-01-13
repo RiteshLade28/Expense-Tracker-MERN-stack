@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import AppBar from "./components/AppBar.js";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "./store/auth.js";
 import Cookies from "js-cookie";
 

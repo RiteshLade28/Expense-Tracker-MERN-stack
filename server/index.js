@@ -21,17 +21,10 @@ app.use(cors());
 app.use(passport.initialize());
 passportConfig(passport);
 
-app.use(
-  "/transaction",
-  passport.authenticate("jwt", { session: false }),
-  TransactionRoutes
-);
+const auth = passport.authenticate("jwt", { session: false });
+app.use("/transaction", auth, TransactionRoutes);
 app.use("/auth", AuthApiRoutes);
 app.use("/user", UserApiRoutes);
-app.use(
-  "/category",
-  passport.authenticate("jwt", { session: false }),
-  CategoryApiRoutes
-);
+app.use("/category", auth, CategoryApiRoutes);
 connect();
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

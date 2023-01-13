@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import CheckAuth from "./utils/CheckAuth";
 import Guest from "./utils/Guest";
 import Category from "./pages/Category";
+
 export default createBrowserRouter([
   {
     element: <App />,

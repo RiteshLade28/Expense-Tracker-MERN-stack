@@ -17,10 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/auth";
 import CategoryForm from "../components/CategoryForm.js";
 import { useState } from "react";
+
 export default function Categories() {
   const token = Cookies.get("token");
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const [editCategory, seteditCategory] = useState({});
 
   function setEdit(category) {
