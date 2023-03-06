@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 
 export const destroy = async (req, res) => {
-  const categories = req.user.categories;
+  const categories = req.user && req.user.categories;
   const newCategories = categories.filter(
     (category) => category.id != req.params.id
   );

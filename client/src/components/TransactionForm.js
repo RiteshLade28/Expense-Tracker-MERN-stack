@@ -81,11 +81,15 @@ export default function TransactionForm({
 
   function getCategoryNameById() {
     console.log("getCategoryNameById");
-    console.log(user.categories);
+    // console.log(user?.categories);
 
     return (
-      user.categories.find((category) => category._id === form.category_id) ??
-      ""
+      user &&
+      user.categories &&
+      (user?.categories?.find(
+        (category) => category._id === form.category_id
+      ) ??
+        " ")
     );
   }
 
@@ -133,7 +137,7 @@ export default function TransactionForm({
               setForm({ ...form, category_id: newValue._id });
             }}
             id="Category"
-            options={user.categories}
+            options={user && user.categories ? user.categories : []}
             sx={{ width: 200, marginRight: 5 }}
             renderInput={(params) => (
               <TextField {...params} size="small" label="Category" />

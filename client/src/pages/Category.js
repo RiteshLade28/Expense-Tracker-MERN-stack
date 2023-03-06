@@ -39,7 +39,8 @@ export default function Categories() {
     if (res.ok) {
       const _user = {
         ...user,
-        categories: user.categories.filter((cat) => cat._id != id),
+        categories:
+          user.categories && user.categories.filter((cat) => cat._id != id),
       };
       dispatch(setUser({ user: _user }));
     }
@@ -61,34 +62,35 @@ export default function Categories() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {user.categories.map((category) => (
-              <TableRow
-                key={category._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" align="center">
-                  {category.label}
-                </TableCell>
-                <TableCell align="center">{category.icon}</TableCell>
-                <TableCell align="center">
-                  <IconButton
-                    color="primary"
-                    component="label"
-                    onClick={() => setEdit(category)}
-                  >
-                    <EditSharpIcon />
-                  </IconButton>
+            {user &&
+              user?.categories.map((category) => (
+                <TableRow
+                  key={category._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row" align="center">
+                    {category.label}
+                  </TableCell>
+                  <TableCell align="center">{category.icon}</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      color="primary"
+                      component="label"
+                      onClick={() => setEdit(category)}
+                    >
+                      <EditSharpIcon />
+                    </IconButton>
 
-                  <IconButton
-                    color="warning"
-                    component="label"
-                    onClick={() => remove(category._id)}
-                  >
-                    <DeleteSharpIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+                    <IconButton
+                      color="warning"
+                      component="label"
+                      onClick={() => remove(category._id)}
+                    >
+                      <DeleteSharpIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -23,7 +23,10 @@ export default function TransactionsList({
   const user = useSelector((state) => state.auth.user);
 
   function categoryName(id) {
-    const category = user.categories.find((category) => category._id === id);
+    const category =
+      user &&
+      user.categories &&
+      user?.categories?.find((category) => category._id === id);
     return category ? category.label : "NA";
   }
 

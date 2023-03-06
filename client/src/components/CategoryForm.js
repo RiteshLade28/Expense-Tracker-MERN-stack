@@ -72,7 +72,7 @@ export default function CategoryForm({ editCategory }) {
       .then(() => {
         const _user = {
           ...user,
-          categories: [...user.categories, { ...form }],
+          categories: [...user?.categories, { ...form }],
         };
         reload(_user);
       });
@@ -92,7 +92,7 @@ export default function CategoryForm({ editCategory }) {
       .then(() => {
         const _user = {
           ...user,
-          categories: user.categories.map((cat) =>
+          categories: user?.categories.map((cat) =>
             cat._id == editCategory._id ? form : cat
           ),
         };
@@ -102,8 +102,10 @@ export default function CategoryForm({ editCategory }) {
 
   function getCategoryNameById() {
     return (
-      user.categories.find((category) => category._id === form.category_id) ??
-      ""
+      user &&
+      user.categories &&
+      (user?.categories.find((category) => category._id === form.category_id) ??
+        "")
     );
   }
 
